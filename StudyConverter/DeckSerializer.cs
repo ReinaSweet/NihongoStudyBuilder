@@ -68,6 +68,10 @@ namespace NihongoStudyBuilder.StudyConverter
                     {
                         mChapterDecks.Add(currentDeck);
                     }
+                    else
+                    {
+                        mInvalidDecks.Add(currentDeck);
+                    }
                     currentDeck = new Deck(this);
                     currentDeck.InitializeFromLine(SplitSourceFileLine(line));
                 }
@@ -84,6 +88,10 @@ namespace NihongoStudyBuilder.StudyConverter
             if (currentDeck.IsValidDeck())
             {
                 mChapterDecks.Add(currentDeck);
+            }
+            else
+            {
+                mInvalidDecks.Add(currentDeck);
             }
 
             // Track which book and chapter numbers are available for aggregating
@@ -121,6 +129,8 @@ namespace NihongoStudyBuilder.StudyConverter
         }
 
         public List<Deck> GetChapterDecks() { return mChapterDecks; }
+
+        public List<Deck> GetInvalidDecks() { return mInvalidDecks; }
 
         public void WriteSingleDeck(Deck deck)
         {
@@ -295,6 +305,7 @@ namespace NihongoStudyBuilder.StudyConverter
         private string mSourceFileName;
         private string mBookName;
         private List<Deck> mChapterDecks = new List<Deck>();
+        private List<Deck> mInvalidDecks = new List<Deck>();
         private List<BookAndChapterNum> mBookAndChapterNumbers = new List<BookAndChapterNum>();
 
         private Dictionary<int, int> mBookNumberToAppendixCount = new Dictionary<int, int>();

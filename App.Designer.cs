@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mTabWriteChapterDecks = new System.Windows.Forms.TabPage();
+            this.mChapterEnabledOptions = new System.Windows.Forms.CheckedListBox();
             this.mBtnWriteChapterDecks = new System.Windows.Forms.Button();
             this.mTableWriteAggregateDecks = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -44,13 +46,20 @@
             this.mBtnWriteAggregateDecks = new System.Windows.Forms.Button();
             this.mReloadDeckSerializer = new System.Windows.Forms.Button();
             this.mProgressBar = new System.Windows.Forms.ProgressBar();
-            this.mChapterEnabledOptions = new System.Windows.Forms.CheckedListBox();
+            this.mInfoPage = new System.Windows.Forms.TabPage();
+            this.mInfoGrid = new System.Windows.Forms.DataGridView();
+            this.mLblLoadResults = new System.Windows.Forms.Label();
+            this.mLoadResults = new System.Windows.Forms.Label();
+            this.mInfoGridChapter = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.mInfoGridMessage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.mTabWriteChapterDecks.SuspendLayout();
             this.mTableWriteAggregateDecks.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mTrackBarMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mTrackBarMin)).BeginInit();
+            this.mInfoPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mInfoGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -58,6 +67,7 @@
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.mInfoPage);
             this.tabControl1.Controls.Add(this.mTabWriteChapterDecks);
             this.tabControl1.Controls.Add(this.mTableWriteAggregateDecks);
             this.tabControl1.Location = new System.Drawing.Point(0, 31);
@@ -78,11 +88,21 @@
             this.mTabWriteChapterDecks.Text = "Write Chapter Decks";
             this.mTabWriteChapterDecks.UseVisualStyleBackColor = true;
             // 
+            // mChapterEnabledOptions
+            // 
+            this.mChapterEnabledOptions.FormattingEnabled = true;
+            this.mChapterEnabledOptions.Items.AddRange(new object[] {
+            "Plain Form"});
+            this.mChapterEnabledOptions.Location = new System.Drawing.Point(8, 35);
+            this.mChapterEnabledOptions.Name = "mChapterEnabledOptions";
+            this.mChapterEnabledOptions.Size = new System.Drawing.Size(207, 94);
+            this.mChapterEnabledOptions.TabIndex = 7;
+            // 
             // mBtnWriteChapterDecks
             // 
-            this.mBtnWriteChapterDecks.Location = new System.Drawing.Point(8, 6);
+            this.mBtnWriteChapterDecks.Location = new System.Drawing.Point(6, 6);
             this.mBtnWriteChapterDecks.Name = "mBtnWriteChapterDecks";
-            this.mBtnWriteChapterDecks.Size = new System.Drawing.Size(141, 23);
+            this.mBtnWriteChapterDecks.Size = new System.Drawing.Size(140, 23);
             this.mBtnWriteChapterDecks.TabIndex = 2;
             this.mBtnWriteChapterDecks.Text = "Write Chapter Decks";
             this.mBtnWriteChapterDecks.UseVisualStyleBackColor = true;
@@ -208,7 +228,7 @@
             // 
             this.mBtnWriteAggregateDecks.Location = new System.Drawing.Point(6, 6);
             this.mBtnWriteAggregateDecks.Name = "mBtnWriteAggregateDecks";
-            this.mBtnWriteAggregateDecks.Size = new System.Drawing.Size(141, 23);
+            this.mBtnWriteAggregateDecks.Size = new System.Drawing.Size(140, 23);
             this.mBtnWriteAggregateDecks.TabIndex = 3;
             this.mBtnWriteAggregateDecks.Text = "Write Aggregate Decks";
             this.mBtnWriteAggregateDecks.UseVisualStyleBackColor = true;
@@ -234,24 +254,86 @@
             this.mProgressBar.Size = new System.Drawing.Size(282, 23);
             this.mProgressBar.TabIndex = 3;
             // 
-            // mChapterEnabledOptions
+            // mInfoPage
             // 
-            this.mChapterEnabledOptions.FormattingEnabled = true;
-            this.mChapterEnabledOptions.Items.AddRange(new object[] {
-            "Plain Form"});
-            this.mChapterEnabledOptions.Location = new System.Drawing.Point(8, 35);
-            this.mChapterEnabledOptions.Name = "mChapterEnabledOptions";
-            this.mChapterEnabledOptions.Size = new System.Drawing.Size(207, 94);
-            this.mChapterEnabledOptions.TabIndex = 7;
+            this.mInfoPage.Controls.Add(this.mLoadResults);
+            this.mInfoPage.Controls.Add(this.mLblLoadResults);
+            this.mInfoPage.Controls.Add(this.mInfoGrid);
+            this.mInfoPage.Location = new System.Drawing.Point(4, 22);
+            this.mInfoPage.Name = "mInfoPage";
+            this.mInfoPage.Size = new System.Drawing.Size(434, 348);
+            this.mInfoPage.TabIndex = 2;
+            this.mInfoPage.Text = "Info";
+            this.mInfoPage.UseVisualStyleBackColor = true;
+            // 
+            // mInfoGrid
+            // 
+            this.mInfoGrid.AllowUserToAddRows = false;
+            this.mInfoGrid.AllowUserToDeleteRows = false;
+            this.mInfoGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.mInfoGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.mInfoGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.mInfoGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.mInfoGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.mInfoGridChapter,
+            this.mInfoGridMessage});
+            this.mInfoGrid.Location = new System.Drawing.Point(0, 25);
+            this.mInfoGrid.Name = "mInfoGrid";
+            this.mInfoGrid.ReadOnly = true;
+            this.mInfoGrid.RowHeadersVisible = false;
+            this.mInfoGrid.Size = new System.Drawing.Size(432, 322);
+            this.mInfoGrid.TabIndex = 0;
+            // 
+            // mLblLoadResults
+            // 
+            this.mLblLoadResults.AutoSize = true;
+            this.mLblLoadResults.Location = new System.Drawing.Point(3, 4);
+            this.mLblLoadResults.Name = "mLblLoadResults";
+            this.mLblLoadResults.Size = new System.Drawing.Size(72, 13);
+            this.mLblLoadResults.TabIndex = 1;
+            this.mLblLoadResults.Text = "Load Results:";
+            // 
+            // mLoadResults
+            // 
+            this.mLoadResults.AutoSize = true;
+            this.mLoadResults.Location = new System.Drawing.Point(81, 4);
+            this.mLoadResults.Name = "mLoadResults";
+            this.mLoadResults.Size = new System.Drawing.Size(0, 13);
+            this.mLoadResults.TabIndex = 2;
+            // 
+            // mInfoGridChapter
+            // 
+            this.mInfoGridChapter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.mInfoGridChapter.Frozen = true;
+            this.mInfoGridChapter.HeaderText = "Chapter";
+            this.mInfoGridChapter.Name = "mInfoGridChapter";
+            this.mInfoGridChapter.ReadOnly = true;
+            this.mInfoGridChapter.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.mInfoGridChapter.Width = 65;
+            // 
+            // mInfoGridMessage
+            // 
+            this.mInfoGridMessage.HeaderText = "Message";
+            this.mInfoGridMessage.Name = "mInfoGridMessage";
+            this.mInfoGridMessage.ReadOnly = true;
             // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(440, 403);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.mProgressBar);
             this.Controls.Add(this.mReloadDeckSerializer);
-            this.Controls.Add(this.tabControl1);
             this.Name = "App";
             this.Text = "Minna no Nihongo - Study Converter";
             this.Load += new System.EventHandler(this.mApp_Load);
@@ -263,6 +345,9 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mTrackBarMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mTrackBarMin)).EndInit();
+            this.mInfoPage.ResumeLayout(false);
+            this.mInfoPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mInfoGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -285,6 +370,12 @@
         private System.Windows.Forms.Button mReloadDeckSerializer;
         private System.Windows.Forms.ProgressBar mProgressBar;
         private System.Windows.Forms.CheckedListBox mChapterEnabledOptions;
+        private System.Windows.Forms.TabPage mInfoPage;
+        private System.Windows.Forms.Label mLblLoadResults;
+        private System.Windows.Forms.DataGridView mInfoGrid;
+        private System.Windows.Forms.Label mLoadResults;
+        private System.Windows.Forms.DataGridViewTextBoxColumn mInfoGridChapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn mInfoGridMessage;
     }
 }
 

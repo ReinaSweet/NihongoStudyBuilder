@@ -50,6 +50,10 @@ namespace NihongoStudyBuilder
 
         private void LoadDeckSerializer()
         {
+            // Set messages
+            mLoadResults.Text = "Loading...";
+            mInfoGrid.Rows.Clear();
+
             // Attempt to download sheet into our temp location
             // If download fails, default to LKG
             string fileToUse;
@@ -69,6 +73,7 @@ namespace NihongoStudyBuilder
             // We can't do anything if we both failed to download and had no available Last Known Good
             if (!File.Exists(fileToUse))
             {
+                mLoadResults.Text = "Failed download with no available LKG";
                 return;
             }
 
@@ -76,15 +81,54 @@ namespace NihongoStudyBuilder
             mDeckSerializer = new DeckSerializer(fileToUse, "みんなの日本語");
             mDeckSerializer.LoadDecks();
 
-            // Serializer loaded successfully (we didn't throw an exception during it)
-            // If we used a file other than LKG, swap
-            if (fileToUse != kLKGBookFileName)
+            List<Deck> invalidDecks = mDeckSerializer.GetInvalidDecks();
+            bool hasErrors = false;
+            bool hasEmptyDecks = false;
+
+            if (invalidDecks.Count > 0)
             {
-                if (File.Exists(kLKGBookFileName))
+                foreach (Deck deck in invalidDecks)
                 {
-                    File.Delete(kLKGBookFileName);
+                    List<string> errors = deck.GetErrors();
+                    if (errors.Count > 0)
+                    {
+                        hasErrors = true;
+                        foreach (string error in errors)
+                        {
+                            AddToInfoGrid(deck, error, true);
+                        }
+                    }
+                    else if (deck.GetCardCount() == 0)
+                    {
+                        hasEmptyDecks = true;
+                        AddToInfoGrid(deck, "Empty deck");
+                    }
+                    else
+                    {
+                        hasErrors = true;
+                        AddToInfoGrid(deck, "Marked as invalid, but unable to identify why", true);
+                    }
                 }
-                File.Move(fileToUse, kLKGBookFileName);
+            }
+
+            if (hasErrors)
+            {
+                mLoadResults.Text = "Errors present; fully valid decks still loaded.";
+            }
+            else
+            {
+                mLoadResults.Text = (hasEmptyDecks ? "Success, but with empty decks" : "Success!");
+
+                // Serializer loaded successfully (we didn't throw an exception during it)
+                // If we used a file other than LKG, swap
+                if (fileToUse != kLKGBookFileName)
+                {
+                    if (File.Exists(kLKGBookFileName))
+                    {
+                        File.Delete(kLKGBookFileName);
+                    }
+                    File.Move(fileToUse, kLKGBookFileName);
+                }
             }
 
             // Update our interface with the new values
@@ -243,6 +287,18 @@ namespace NihongoStudyBuilder
         {
             mProgressBar.Value += 1;
             Application.DoEvents();
+        }
+
+        // Info Grid
+        private void AddToInfoGrid(Deck deck, string message, bool isError = false)
+        {
+            int idx = mInfoGrid.Rows.Add();
+            mInfoGrid.Rows[idx].Cells["mInfoGridChapter"].Value = deck.GetBookAndChapterNumber().ToString();
+            mInfoGrid.Rows[idx].Cells["mInfoGridMessage"].Value = message;
+            if (isError)
+            {
+                mInfoGrid.Rows[idx].DefaultCellStyle.BackColor = Color.IndianRed;
+            }
         }
 
 // events:

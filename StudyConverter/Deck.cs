@@ -107,6 +107,11 @@ namespace NihongoStudyBuilder.StudyConverter
         {
             return mCards.Count;
         }
+
+        public List<string> GetErrors()
+        {
+            return mErrors;
+        }
         
         public void FilterCardsDownTo(CardType cardType)
         {
