@@ -42,7 +42,7 @@ namespace NihongoStudyBuilder.StudyConverter
             StreamReader file = new StreamReader(mSourceFileName, Encoding.UTF8);
 
             string line;
-            Deck currentDeck = new Deck(this);
+            Deck currentDeck = null;
 
             while ((line = file.ReadLine()) != null)
             {
@@ -64,14 +64,7 @@ namespace NihongoStudyBuilder.StudyConverter
                 // Stoppers between decks
                 if (line.StartsWith("@"))
                 {
-                    if (currentDeck.IsValidDeck())
-                    {
-                        mChapterDecks.Add(currentDeck);
-                    }
-                    else
-                    {
-                        mInvalidDecks.Add(currentDeck);
-                    }
+                    AddDeck(currentDeck);
                     currentDeck = new Deck(this);
                     currentDeck.InitializeFromLine(SplitSourceFileLine(line));
                 }
@@ -85,14 +78,7 @@ namespace NihongoStudyBuilder.StudyConverter
             file.Close();
 
             // Close out last deck
-            if (currentDeck.IsValidDeck())
-            {
-                mChapterDecks.Add(currentDeck);
-            }
-            else
-            {
-                mInvalidDecks.Add(currentDeck);
-            }
+            AddDeck(currentDeck);
 
             // Track which book and chapter numbers are available for aggregating
             BookAndChapterNum lastBookAndChapterNumber = new BookAndChapterNum();
@@ -324,6 +310,22 @@ namespace NihongoStudyBuilder.StudyConverter
         {
             kChapterPair = 0,
             kAppendix
+        }
+
+        private void AddDeck(Deck deck)
+        {
+            if (deck == null)
+            {
+                return;
+            }
+            if (deck.IsValidDeck())
+            {
+                mChapterDecks.Add(deck);
+            }
+            else
+            {
+                mInvalidDecks.Add(deck);
+            }
         }
 
         private void WriteSingleDeckForAllLanguages(Deck deck)

@@ -245,9 +245,13 @@ namespace NihongoStudyBuilder.StudyConverter
         
         private void InitializeVerbJishoFromType()
         {
-            if (!mKana.EndsWith("ます") || mKana.Length <= 2)
+            if (!mKana.EndsWith("ます"))
             {
-                throw new Exception(string.Format("Kana \"{0}\" was malformed for a verb", mKana));
+                throw new Exception(string.Format("\"{0}\" : Does not end in ます", mKana));
+            }
+            if (mKana.Length == 2)
+            {
+                throw new Exception(string.Format("\"{0}\" : A verb can't be only ます", mKana));
             }
 
             // Special exception, Suru and Kuru are both "type 3"
@@ -393,7 +397,7 @@ namespace NihongoStudyBuilder.StudyConverter
                             break;
 
                         default:
-                            break;
+                            throw new Exception(string.Format("\"{0}\" : Could not identify last hiragana for te form", mKana));
                     }
                 }
             }
@@ -441,7 +445,7 @@ namespace NihongoStudyBuilder.StudyConverter
             }
             else
             {
-                throw new Exception("Unidentified verb type attempted to be used");
+                throw new Exception(string.Format("\"{0}\" : Unidentified verb type attempted to be used", mKana));
             }
 
             //
