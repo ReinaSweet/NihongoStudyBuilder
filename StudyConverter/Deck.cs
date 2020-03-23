@@ -72,7 +72,17 @@ namespace NihongoStudyBuilder.StudyConverter
             {
                 return;
             }
-            mCards.Add(new Card(mDeckSerializer, this, line));
+
+            Card card = null;
+            try
+            {
+                card = new Card(mDeckSerializer, this, line);
+                mCards.Add(card);
+            }
+            catch (Exception e)
+            {
+                mErrors.Add(e.Message);
+            }
         }
 
         public void AddCardFromAnotherDeck(Deck deck, int cardIndex)
@@ -88,9 +98,9 @@ namespace NihongoStudyBuilder.StudyConverter
             return mTitle;
         }
 
-        public bool HasCards()
+        public bool IsValidDeck()
         {
-            return mCards.Count > 0;
+            return (mCards.Count > 0) && (mErrors.Count == 0);
         }
 
         public int GetCardCount()
@@ -248,6 +258,8 @@ namespace NihongoStudyBuilder.StudyConverter
         private List<Card> mCards = new List<Card>();
 
         private int mWeight = -1;
+
+        private List<string> mErrors = new List<string>();
         
         private void ShuffleListOfCards(ref List<Card> cards)
         {

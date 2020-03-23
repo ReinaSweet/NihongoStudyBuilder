@@ -64,7 +64,7 @@ namespace NihongoStudyBuilder.StudyConverter
                 // Stoppers between decks
                 if (line.StartsWith("@"))
                 {
-                    if (currentDeck.HasCards())
+                    if (currentDeck.IsValidDeck())
                     {
                         mChapterDecks.Add(currentDeck);
                     }
@@ -81,7 +81,7 @@ namespace NihongoStudyBuilder.StudyConverter
             file.Close();
 
             // Close out last deck
-            if (currentDeck.HasCards())
+            if (currentDeck.IsValidDeck())
             {
                 mChapterDecks.Add(currentDeck);
             }

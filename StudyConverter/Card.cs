@@ -247,7 +247,7 @@ namespace NihongoStudyBuilder.StudyConverter
         {
             if (!mKana.EndsWith("ます") || mKana.Length <= 2)
             {
-                throw new Exception("Kana was malformed for a verb");
+                throw new Exception(string.Format("Kana \"{0}\" was malformed for a verb", mKana));
             }
 
             // Special exception, Suru and Kuru are both "type 3"
