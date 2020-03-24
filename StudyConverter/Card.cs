@@ -245,14 +245,19 @@ namespace NihongoStudyBuilder.StudyConverter
         
         private void InitializeVerbJishoFromType()
         {
-            if (!mKana.EndsWith("ます"))
+            // Only look at the last word in a line, not the whole line
+            string reducedLastWord = mKana.Split(' ').Last();
+
+            if (!reducedLastWord.EndsWith("ます"))
             {
                 throw new Exception(string.Format("\"{0}\" : Does not end in ます", mKana));
             }
-            if (mKana.Length == 2)
+            if (reducedLastWord.Length == 2)
             {
                 throw new Exception(string.Format("\"{0}\" : A verb can't be only ます", mKana));
             }
+
+            reducedLastWord = reducedLastWord.Substring(0, reducedLastWord.Length - 2);
 
             // Special exception, Suru and Kuru are both "type 3"
             if (HasCardType(CardType.kVerbSuru) && mLastKanji == '来')
@@ -260,9 +265,6 @@ namespace NihongoStudyBuilder.StudyConverter
                 mCardTypes.Remove(CardType.kVerbSuru);
                 mCardTypes.Add(CardType.kVerbKuru);
             }
-
-            string reducedLastWord = mKana.Split(' ').Last();
-            reducedLastWord = reducedLastWord.Substring(0, reducedLastWord.Length - 2);
 
             if (HasCardType(CardType.kVerbGodan))
             {
