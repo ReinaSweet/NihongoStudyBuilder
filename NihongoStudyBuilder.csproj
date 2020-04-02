@@ -55,6 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StudyConverter\BookAndChapterNum.cs" />
     <Compile Include="StudyConverter\Card.cs" />
+    <Compile Include="StudyConverter\CardWriterMethodCardTypeInfo.cs" />
     <Compile Include="StudyConverter\CardWriterMethodBrainscape.cs" />
     <Compile Include="StudyConverter\CardWriterMethod.cs" />
     <Compile Include="StudyConverter\CharacterTools.cs" />

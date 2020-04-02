@@ -10,20 +10,12 @@ namespace NihongoStudyBuilder.StudyConverter
     {
 //public:
         public CardWriterMethodBrainscape(DeckSerializer deckSerializer, Card baseCard, CardKey key)
+            : base(deckSerializer, baseCard, key)
         {
-            mDeckSerializer = deckSerializer;
-            mCards.Add(baseCard);
-            mCardKey = key;
-            
             if (baseCard.HasCardType(CardType.kPhrase))
             {
                 mSharedPreNote += "[Phrase]";
             }
-        }
-
-        public override void AttachCard(Card additionalCard)
-        {
-            mCards.Add(additionalCard);
         }
 
         public override string GetLine()
@@ -49,9 +41,6 @@ namespace NihongoStudyBuilder.StudyConverter
         private const string kLineBreak = "•<span style='text-decoration: line-through'>————————————</span>";
 
 //private:
-        private DeckSerializer mDeckSerializer;
-        private List<Card> mCards = new List<Card>();
-        private CardKey mCardKey;
         private string mSharedPreNote = "";
 
         private string Format_MainSubject(string text)
