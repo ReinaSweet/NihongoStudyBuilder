@@ -43,7 +43,7 @@ namespace NihongoStudyBuilder.StudyConverter
             mBookAndChapterNum = originalParentDeck.GetBookAndChapterNumber();
 
             InitializeCardTypes(line[0]);
-            mKana = line[1];
+            InitializeKana(line[1]);
             InitializeKanji(line[2]);
             mEnglish = line[3];
             mJishoText = line[4];
@@ -215,6 +215,19 @@ namespace NihongoStudyBuilder.StudyConverter
                 }
             }
             mCardTypes = mCardTypes.Distinct().ToList();
+        }
+
+        private void InitializeKana(string kanaText)
+        {
+            mKana = kanaText;
+
+            foreach (char singleKana in mKana)
+            {
+                if (CharacterTools.IsKanji(singleKana))
+                {
+                    throw new Exception(string.Format("\"{0}\" : Has Kanji in the Kana field", mKana));
+                }
+            }
         }
 
         private void InitializeKanji(string kanjiText)
