@@ -73,6 +73,12 @@ namespace NihongoStudyBuilder.StudyConverter
                 return;
             }
 
+            if (line.Contains("FIXME"))
+            {
+                mErrors.Add("FIXME line present");
+                return;
+            }
+
             Card card = null;
             try
             {
