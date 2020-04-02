@@ -245,7 +245,7 @@ namespace NihongoStudyBuilder.StudyConverter
                     }
                     else
                     {
-                        cardWriters[key] = new CardWriterMethod(mDeckSerializer, card, cardKey);
+                        cardWriters[key] = CardWriterMethod.CreateWriterMethod(CardWriterFormat.kBrainscape, mDeckSerializer, card, cardKey);
                     }
                 }
 
