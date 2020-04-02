@@ -50,9 +50,13 @@ namespace NihongoStudyBuilder
 
         private void LoadDeckSerializer()
         {
+            const int totalSteps = 4;
+            ResetProgressBar(totalSteps);
+
             // Set messages
             mLoadResults.Text = "Loading...";
             mInfoGrid.Rows.Clear();
+            IncrementBar();
 
             // Attempt to download sheet into our temp location
             // If download fails, default to LKG
@@ -69,6 +73,7 @@ namespace NihongoStudyBuilder
             {
                 fileToUse = kLKGBookFileName;
             }
+            IncrementBar();
 
             // We can't do anything if we both failed to download and had no available Last Known Good
             if (!File.Exists(fileToUse))
@@ -80,7 +85,9 @@ namespace NihongoStudyBuilder
             // Load serializer, this will throw on fail
             mDeckSerializer = new DeckSerializer(fileToUse, "みんなの日本語");
             mDeckSerializer.LoadDecks();
+            IncrementBar();
 
+            // Report invalid decks
             List<Deck> invalidDecks = mDeckSerializer.GetInvalidDecks();
             bool hasErrors = false;
             bool hasEmptyDecks = false;
@@ -130,6 +137,7 @@ namespace NihongoStudyBuilder
                     File.Move(fileToUse, kLKGBookFileName);
                 }
             }
+            IncrementBar();
 
             // Update our interface with the new values
             mBookAndChapterNumbers = mDeckSerializer.GetBookAndChapterNumbers();

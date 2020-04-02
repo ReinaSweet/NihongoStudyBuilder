@@ -43,6 +43,7 @@ namespace NihongoStudyBuilder.StudyConverter
 
             string line;
             Deck currentDeck = null;
+            AddCardResult lastCardAddResult = AddCardResult.kNoResult;
 
             while ((line = file.ReadLine()) != null)
             {
@@ -67,11 +68,17 @@ namespace NihongoStudyBuilder.StudyConverter
                     AddDeck(currentDeck);
                     currentDeck = new Deck(this);
                     currentDeck.InitializeFromLine(SplitSourceFileLine(line));
+                    lastCardAddResult = AddCardResult.kNoResult;
                 }
                 // Read in each line into its component parts
                 else
                 {
-                    currentDeck.AddCardFromLine(SplitSourceFileLine(line));
+                    AddCardResult addCardResult = currentDeck.AddCardFromLine(SplitSourceFileLine(line));
+                    if (lastCardAddResult == AddCardResult.kBlank && addCardResult != AddCardResult.kBlank)
+                    {
+                        currentDeck.MarkError("Has a line skip within the deck");
+                    }
+                    lastCardAddResult = addCardResult;
                 }
             }
 

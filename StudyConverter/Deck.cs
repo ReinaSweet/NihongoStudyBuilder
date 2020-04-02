@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 
 namespace NihongoStudyBuilder.StudyConverter
 {
+    enum AddCardResult
+    {
+        kNoResult,
+        kOk,
+        kError,
+        kBlank
+    }
+
     class Deck
     {
 // public:
@@ -66,17 +74,17 @@ namespace NihongoStudyBuilder.StudyConverter
             mTitle = title;
         }
 
-        public void AddCardFromLine(List<string> line)
+        public AddCardResult AddCardFromLine(List<string> line)
         {
             if (line.Count < 2 || string.IsNullOrEmpty(line[1]))
             {
-                return;
+                return AddCardResult.kBlank;
             }
 
             if (line.Contains("FIXME"))
             {
                 mErrors.Add("FIXME line present");
-                return;
+                return AddCardResult.kError;
             }
 
             Card card = null;
@@ -84,10 +92,12 @@ namespace NihongoStudyBuilder.StudyConverter
             {
                 card = new Card(mDeckSerializer, this, line);
                 mCards.Add(card);
+                return AddCardResult.kOk;
             }
             catch (Exception e)
             {
                 mErrors.Add(e.Message);
+                return AddCardResult.kError;
             }
         }
 
@@ -117,6 +127,11 @@ namespace NihongoStudyBuilder.StudyConverter
         public List<string> GetErrors()
         {
             return mErrors;
+        }
+
+        public void MarkError(string error)
+        {
+            mErrors.Add(error);
         }
         
         public void FilterCardsDownTo(CardType cardType)
