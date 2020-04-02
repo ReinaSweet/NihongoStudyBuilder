@@ -14,6 +14,16 @@ namespace NihongoStudyBuilder.StudyConverter
             return (c >= 0x4E00) && (c <= 0x9FBF);
         }
 
+        static public bool IsHiragana(char c)
+        {
+            return (c >= 0x3040 && c < 0x30A0);
+        }
+
+        static public bool IsKatakana(char c)
+        {
+            return (c >= 0x30A0 && c < 0x30F3);
+        }
+
         static public bool IsHiraganaSoundE(char c)
         {
             return
@@ -70,22 +80,18 @@ namespace NihongoStudyBuilder.StudyConverter
         static public char ConvertKanaVowelSound(char c, char desiredVowel, bool forVerbUsage = false)
         {
             int codePoint = c;
-            if (codePoint < 0x3040 || codePoint > 0x30F2)
-            {
-                return c;
-            }
-
             bool isKatakana = false;
-            if (codePoint >= 0x30A0)
+
+            if (IsHiragana(c))
+            {
+                codePoint = codePoint - 0x3040;
+            }
+            else if (IsKatakana(c))
             {
                 isKatakana = true;
                 codePoint = codePoint - 0x30A0;
             }
-            else
-            {
-                codePoint = codePoint - 0x3040;
-            }
-
+            
             // あ = 0, い = 1, う = 2, え = 3, お = 4
             int desiredCodePointV = desiredVowel;
             desiredCodePointV = ((desiredCodePointV - 0x3040) >> 1) - 1;

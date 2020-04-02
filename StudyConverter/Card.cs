@@ -227,13 +227,41 @@ namespace NihongoStudyBuilder.StudyConverter
             {
                 mKanji = kanjiText;
 
+                List<string> kanaSequences = new List<string>();
+                string currentSequence = "";
                 foreach (char c in mKanji)
                 {
-                    if (CharacterTools.IsKanji(c))
+                    if (CharacterTools.IsHiragana(c) || CharacterTools.IsKatakana(c))
+                    {
+                        currentSequence += c;
+                    }
+                    else if (c == ',')
+                    {
+                        kanaSequences.Add(currentSequence);
+                        currentSequence = "";
+                    }
+                    else if (CharacterTools.IsKanji(c))
                     {
                         string kanjiLink = string.Format("<a href='https://jisho.org/search/{0}%20%23kanji' target='_blank'>{0}</a>", c);
                         mKanjiLinks.Add(kanjiLink);
                         mLastKanji = c;
+                    }
+                }
+
+                kanaSequences.Add(currentSequence);
+
+                // Verify that we have kana and kanji information that at least roughly align
+                foreach (string kanaSequence in kanaSequences)
+                {
+                    int lastTrackedIndex = 0;
+                    foreach (char singleKana in kanaSequence)
+                    {
+                        int idx = mKana.IndexOf(singleKana, lastTrackedIndex);
+                        if (idx == -1)
+                        {
+                            throw new Exception(string.Format("\"{0}\" : Has non-matching Kanji and Kana", mKana));
+                        }
+                        lastTrackedIndex = idx;
                     }
                 }
             }
