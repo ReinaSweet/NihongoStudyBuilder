@@ -32,21 +32,31 @@ namespace NihongoStudyBuilder.StudyConverter
         public abstract string GetLine();
 
 //public:
-        public void AttachCard(Card additionalCard)
+        public void AttachCard(Card card)
         {
-            mCards.Add(additionalCard);
+            if (card.GetBookAndChapterNum().IsValid())
+            {
+                mCardChapterNums.Add(card.GetBookAndChapterNum());
+            }
+
+            if ((mCards.Count == 0) ||
+                (!mCards.First().KeyResultsEquals(card)))
+            {
+                mCards.Add(card);
+            }
         }
 
 //protected:
         protected CardWriterMethod(DeckSerializer deckSerializer, Card baseCard, CardKey key)
         {
             mDeckSerializer = deckSerializer;
-            mCards.Add(baseCard);
+            AttachCard(baseCard);
             mCardKey = key;
         }
 
         protected DeckSerializer mDeckSerializer;
         protected List<Card> mCards = new List<Card>();
+        protected List<BookAndChapterNum> mCardChapterNums = new List<BookAndChapterNum>();
         protected CardKey mCardKey;
     }
 }

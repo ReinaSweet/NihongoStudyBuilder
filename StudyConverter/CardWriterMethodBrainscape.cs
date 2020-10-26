@@ -166,9 +166,21 @@ namespace NihongoStudyBuilder.StudyConverter
             }
 
             string chapterNum = "";
-            if (mDeckSerializer.HasExtraOptionEnabled(StudyOptions.Option.kIncludeChapterSourceInResult) && card.GetBookAndChapterNum().IsValid())
+            if (mDeckSerializer.HasExtraOptionEnabled(StudyOptions.Option.kIncludeChapterSourceInResult))
             {
-                chapterNum = card.GetBookAndChapterNum().ToString();
+                // If we have multiple distinct cards, each gets a chapter
+                if (mCards.Count > 1)
+                {
+                    if (card.GetBookAndChapterNum().IsValid())
+                    {
+                        chapterNum = card.GetBookAndChapterNum().ToString();
+                    }
+                }
+                // But if the cards were truly equivalent, then instead we show it as one card with multiple chapters
+                else if (mCardChapterNums.Count > 0)
+                {
+                    chapterNum = string.Join("], [", mCardChapterNums);
+                }
             }
 
             // Secondary subject

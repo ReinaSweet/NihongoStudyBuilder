@@ -115,6 +115,13 @@ namespace NihongoStudyBuilder.StudyConverter
             return "";
         }
 
+        public bool KeyResultsEquals(Card otherCard)
+        {
+            return (mKana == otherCard.mKana) &&
+                (mEnglish == otherCard.mEnglish) &&
+                (mKanji == otherCard.mKanji);
+        }
+
         public BookAndChapterNum GetBookAndChapterNum()
         {
             return mBookAndChapterNum;
@@ -221,6 +228,16 @@ namespace NihongoStudyBuilder.StudyConverter
         {
             mKana = kanaText;
 
+            if (mKana.StartsWith(" "))
+            {
+                throw new Exception(string.Format("\"{0}\" : Starting whitespace on kana", mKana));
+            }
+
+            if (mKana.EndsWith(" "))
+            {
+                throw new Exception(string.Format("\"{0}\" : Trailing whitespace on kana", mKana));
+            }
+
             foreach (char singleKana in mKana)
             {
                 if (CharacterTools.IsKanji(singleKana))
@@ -239,6 +256,16 @@ namespace NihongoStudyBuilder.StudyConverter
             else
             {
                 mKanji = kanjiText;
+
+                if (mKanji.StartsWith(" "))
+                {
+                    throw new Exception(string.Format("\"{0}\" : Starting whitespace on kanji", mKana));
+                }
+
+                if (mKanji.EndsWith(" "))
+                {
+                    throw new Exception(string.Format("\"{0}\" : Trailing whitespace on kanji", mKana));
+                }
 
                 List<string> kanaSequences = new List<string>();
                 string currentSequence = "";
