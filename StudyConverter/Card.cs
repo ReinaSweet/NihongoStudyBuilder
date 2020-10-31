@@ -55,6 +55,11 @@ namespace NihongoStudyBuilder.StudyConverter
                     InitializeVerbJishoFromType();
                     InitializeVerbForms();
                 }
+                else if (mKana.Equals("いらっしゃいます"))
+                {
+                    // Very special case and most of the variations are unused
+                    InitializeIrashaiVerb();
+                }
                 else
                 {
                     throw new Exception(string.Format("\"{0}\" : Listed as a verb, but with no identifiable type", mKana));
@@ -533,6 +538,15 @@ namespace NihongoStudyBuilder.StudyConverter
             if (imperativeForm != null) { mForms.Add(imperativeForm); }
             mForms.Add(new WordForm(jishoForm.GetWord() + "な", WordFormType.kProhibitive, WordPoliteness.kUndefined, "な"));
             mForms.Add(conditionalForm);
+        }
+
+        private void InitializeIrashaiVerb()
+        {
+            mJishoText = "いらっしゃる";
+
+            mForms.Add(new WordForm(mJishoText, WordFormType.kPerfect, WordPoliteness.kPlain, "じしょ"));
+            mForms.Add(new WordForm(mKana, WordFormType.kPerfect, WordPoliteness.kPolite, "ます"));
+            mForms.Add(new WordForm("いらっしゃった", WordFormType.kPast, WordPoliteness.kPlain, "た"));
         }
 
         /***************************
