@@ -46,8 +46,7 @@ namespace NihongoStudyBuilder.StudyConverter
             InitializeKana(line[1]);
             InitializeKanji(line[2]);
             mEnglish = line[3];
-            mJishoText = line[4];
-            mExtraInformation = line[5];
+            mExtraInformation = line[4];
 
             if (mCardTypes.Contains(CardType.kVerb))
             {
@@ -56,10 +55,9 @@ namespace NihongoStudyBuilder.StudyConverter
                     InitializeVerbJishoFromType();
                     InitializeVerbForms();
                 }
-                else if (mJishoText.Length > 0)
+                else
                 {
-                    InitializeVerbTypes();
-                    InitializeVerbForms();
+                    throw new Exception(string.Format("\"{0}\" : Listed as a verb, but with no identifiable type", mKana));
                 }
             }
 
@@ -382,55 +380,6 @@ namespace NihongoStudyBuilder.StudyConverter
                 {
                     mJishoText = reducedLastWord;
                     mJishoText += "くる";
-                }
-            }
-        }
-
-        private void InitializeVerbTypes()
-        {
-            CardType verbType = CardType.kVerbGodan; // Until shown otherwise
-
-            if (mJishoText.Count() >= 2 && mJishoText.EndsWith("る"))
-            {
-                if (mKanji.EndsWith("ます") && mLastKanji != '\0' && (mKanji[mKanji.Length - 3] == mLastKanji))
-                {
-                    verbType = CardType.kVerbIchidan;
-                }
-                else
-                {
-                    char charBeforeRu = mJishoText[mJishoText.Count() - 2];
-                    if (CharacterTools.IsHiraganaSoundE(charBeforeRu))
-                    {
-                        if (!CharacterTools.IsLastKanjiIchidanExceptionE(mLastKanji))
-                        {
-                            verbType = CardType.kVerbIchidan;
-                        }
-                    }
-                    else if (CharacterTools.IsHiraganaSoundI(charBeforeRu))
-                    {
-                        if (!CharacterTools.IsLastKanjiIchidanExceptionI(mLastKanji))
-                        {
-                            verbType = CardType.kVerbIchidan;
-                        }
-                    }
-                    else if (charBeforeRu == 'す')
-                    {
-                        verbType = CardType.kVerbSuru;
-                    }
-                    else if (charBeforeRu == 'く' && mLastKanji == '来')
-                    {
-                        verbType = CardType.kVerbKuru;
-                    }
-                }
-            }
-
-            mCardTypes.Add(verbType);
-
-            if (verbType == CardType.kVerbGodan && mJishoText.EndsWith("いく"))
-            {
-                if (mJishoText.Length == 2 || char.IsWhiteSpace(mJishoText[mJishoText.Length - 3]))
-                {
-                    mCardTypes.Add(CardType.kVerbIku);
                 }
             }
         }
