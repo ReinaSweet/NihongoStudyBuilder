@@ -137,6 +137,29 @@ namespace NihongoStudyBuilder.StudyConverter
             return mKanjiLinks;
         }
 
+        public string GetFormString()
+        {
+            string form = "";
+
+            if (HasCardType(CardType.kVerb))
+            {
+                form += 'v';
+
+                if (HasCardType(CardType.kVerbGodan))        { form += '1'; }
+                else if (HasCardType(CardType.kVerbIchidan)) { form += '2'; }
+                else if (HasCardType(CardType.kVerbSuru))    { form += '3'; }
+                else if (HasCardType(CardType.kVerbKuru))    { form += '3'; }
+
+                if (HasCardType(CardType.kVerbAru))       { form += 'a'; }
+                else if (HasCardType(CardType.kVerbKure)) { form += 'k'; }
+                else if (HasCardType(CardType.kVerbIku))  { form += 'i'; }
+
+                if (HasCardType(CardType.kVerbState)) { form += 's'; }
+            }
+
+            return form;
+        }
+
         override public string ToString()
         {
             return mKana + " : " + mEnglish;
@@ -164,34 +187,38 @@ namespace NihongoStudyBuilder.StudyConverter
                 {
                     mCardTypes.Add(CardType.kVerb);
                 }
-                else if (c == '1')
+                else if (HasCardType(CardType.kVerb))
                 {
-                    mCardTypes.Add(CardType.kVerbGodan);
-                }
-                else if (c == '2')
-                {
-                    mCardTypes.Add(CardType.kVerbIchidan);
-                }
-                else if (c == '3')
-                {
-                    mCardTypes.Add(CardType.kVerbSuru);
-                }
-                else if (c == 'a')
-                {
-                    mCardTypes.Add(CardType.kVerb);
-                    mCardTypes.Add(CardType.kVerbAru);
-                    mCardTypes.Add(CardType.kVerbState);
-                    mCardTypes.Add(CardType.kVerbGodan);
-                }
-                else if (c == 's')
-                {
-                    mCardTypes.Add(CardType.kVerb);
-                    mCardTypes.Add(CardType.kVerbState);
-                }
-                else if (c == 'k')
-                {
-                    mCardTypes.Add(CardType.kVerb);
-                    mCardTypes.Add(CardType.kVerbKure);
+                    if (c == '1')
+                    {
+                        mCardTypes.Add(CardType.kVerbGodan);
+                    }
+                    else if (c == '2')
+                    {
+                        mCardTypes.Add(CardType.kVerbIchidan);
+                    }
+                    else if (c == '3')
+                    {
+                        mCardTypes.Add(CardType.kVerbSuru);
+                    }
+                    else if (c == 'a')
+                    {
+                        mCardTypes.Add(CardType.kVerbAru);
+                        mCardTypes.Add(CardType.kVerbState);
+                        mCardTypes.Add(CardType.kVerbGodan);
+                    }
+                    else if (c == 's')
+                    {
+                        mCardTypes.Add(CardType.kVerbState);
+                    }
+                    else if (c == 'k')
+                    {
+                        mCardTypes.Add(CardType.kVerbKure);
+                    }
+                    else if (c == 'i')
+                    {
+                        mCardTypes.Add(CardType.kVerbIku);
+                    }
                 }
                 else if (c == 'な')
                 {

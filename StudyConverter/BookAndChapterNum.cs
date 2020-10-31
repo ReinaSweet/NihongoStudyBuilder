@@ -46,6 +46,19 @@ namespace NihongoStudyBuilder.StudyConverter
             return mBookNum == other.mBookNum && mChapterNum == other.mChapterNum;
         }
 
+        public int CompareTo(BookAndChapterNum other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            if (mBookNum == other.mBookNum)
+            {
+                return mChapterNum.CompareTo(other.mChapterNum);
+            }
+            return mBookNum.CompareTo(other.mBookNum);
+        }
+
         override public string ToString()
         {
             if (IsValid())

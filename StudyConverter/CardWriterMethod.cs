@@ -37,6 +37,7 @@ namespace NihongoStudyBuilder.StudyConverter
             if (card.GetBookAndChapterNum().IsValid())
             {
                 mCardChapterNums.Add(card.GetBookAndChapterNum());
+                mCardChapterNums.Sort((a, b) => { return a.CompareTo(b); });
             }
 
             if ((mCards.Count == 0) ||

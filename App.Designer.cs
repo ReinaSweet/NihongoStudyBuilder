@@ -196,7 +196,8 @@
             this.mAggregateEnabledOptions.FormattingEnabled = true;
             this.mAggregateEnabledOptions.Items.AddRange(new object[] {
             "Plain Form",
-            "Randomize"});
+            "Randomize",
+            "Include Verb Group"});
             this.mAggregateEnabledOptions.Location = new System.Drawing.Point(6, 137);
             this.mAggregateEnabledOptions.Name = "mAggregateEnabledOptions";
             this.mAggregateEnabledOptions.Size = new System.Drawing.Size(207, 94);

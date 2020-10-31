@@ -165,6 +165,12 @@ namespace NihongoStudyBuilder.StudyConverter
                 valueExtraInfoNote = card.GetExtraInformation();
             }
 
+            string valueForm = "";
+            if (mDeckSerializer.HasExtraOptionEnabled(StudyOptions.Option.kIncludeVerbGroup) && card.HasCardType(CardType.kVerb))
+            {
+                valueForm = "Form: " + card.GetFormString();
+            }
+
             string chapterNum = "";
             if (mDeckSerializer.HasExtraOptionEnabled(StudyOptions.Option.kIncludeChapterSourceInResult))
             {
@@ -233,6 +239,7 @@ namespace NihongoStudyBuilder.StudyConverter
                 Format_PreNote(mSharedPreNote) +
                 Format_MainSubject(mainSubject) +
                 Format_WordSpecificity(valueExtraInfoNote) +
+                Format_WordSpecificity(valueForm) +
                 Format_WordSpecificity(chapterNum) +
                 Format_PlainText(secondarySubject) +
                 Format_InfoLine("漢字", string.Join(" , ", kanjiLinks)) +

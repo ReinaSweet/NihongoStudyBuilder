@@ -14,6 +14,7 @@ namespace NihongoStudyBuilder.StudyConverter
             kPlainForm,
             kRandomize,
             kIncludeChapterSourceInResult,
+            kIncludeVerbGroup,
         }
 
         public struct OptionReq
