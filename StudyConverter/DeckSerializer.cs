@@ -344,7 +344,7 @@ namespace NihongoStudyBuilder.StudyConverter
 
         private List<string> SplitSourceFileLine(string line)
         {
-            const int columnsExpected = 6;
+            const int columnsExpected = 4;
             List<string> splitLine = line.Split('\t').ToList();
             for (int i = 0; i < columnsExpected; ++i)
             {
