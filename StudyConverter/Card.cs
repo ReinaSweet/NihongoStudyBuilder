@@ -383,8 +383,7 @@ namespace NihongoStudyBuilder.StudyConverter
                 }
                 else if (HasCardType(CardType.kVerbKuru))
                 {
-                    mJishoText = reducedLastWord;
-                    mJishoText += "くる";
+                    mJishoText = "くる";
                 }
             }
         }
